@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_list/widgets/left_drawer.dart';
+import 'package:shopping_list/screens/shoplist_form.dart';
+import 'package:shopping_list/widgets/shop_card.dart';
+
 
 class MyHomePage extends StatelessWidget {
     MyHomePage({Key? key}) : super(key: key);
@@ -24,12 +28,11 @@ class MyHomePage extends StatelessWidget {
             appBar: AppBar(
                 title: const Text(
                     'Shopping List',
-                    style: TextStyle(
-                        color: Colors.white, // Set the text color to white
-                    ),
                 ),
                 backgroundColor: Colors.indigo,
+                foregroundColor: Colors.white,
             ),
+            drawer: const LeftDrawer(),
             body: SingleChildScrollView(
                 // Widget wrapper yang dapat discroll
                 child: Padding(
@@ -41,12 +44,12 @@ class MyHomePage extends StatelessWidget {
                         padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                         // Widget Text untuk menampilkan tulisan dengan alignment center dan style yang sesuai
                         child: Text(
-                        'PBP Shop', // Text yang menandakan toko
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                        ),
+                            'PBP Shop', // Text yang menandakan toko
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                            ),
                         ),
                     ),
                     // Grid layout
@@ -71,13 +74,6 @@ class MyHomePage extends StatelessWidget {
     }
 }
 
-class ShopItem {
-    final String name;
-    final IconData icon;
-
-    ShopItem(this.name, this.icon);
-}
-
 class ShopCard extends StatelessWidget {
     final ShopItem item;
 
@@ -90,11 +86,17 @@ class ShopCard extends StatelessWidget {
         child: InkWell(
             // Area responsive terhadap sentuhan
             onTap: () {
-            // Memunculkan SnackBar ketika diklik
-            ScaffoldMessenger.of(context)
-                ..hideCurrentSnackBar()
-                ..showSnackBar(SnackBar(
-                    content: Text("Kamu telah menekan tombol ${item.name}!")));
+                // Memunculkan SnackBar ketika diklik
+                ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(SnackBar(
+                        content: Text("Kamu telah menekan tombol ${item.name}!")));
+
+                // Navigate ke route yang sesuai (tergantung jenis tombol)
+                if (item.name == "Tambah Produk") {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const ShopFormPage()));
+                }
             },
             child: Container(
             // Container untuk menyimpan Icon dan Text
